@@ -1,0 +1,42 @@
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+const SuperCoin = () => {
+
+  // 1️⃣ Initialize superCoins with useState
+  const [superCoins, setSuperCoins] = useState(0);
+
+  // 2️⃣ Get cartItems from Redux store
+  const cartItems = useSelector(state => state.cart.cartItems);
+
+  // 3️⃣ Calculate total amount
+  const totalAmount = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  // 4️⃣ Update superCoins based on totalAmount
+  useEffect(() => {
+    if (totalAmount >= 100 && totalAmount < 200) {
+      setSuperCoins(10);
+    } else if (totalAmount >= 200 && totalAmount < 300) {
+      setSuperCoins(20);
+    } else if (totalAmount >= 300) {
+      setSuperCoins(30);
+    } else {
+      setSuperCoins(0);
+    }
+  }, [totalAmount]);
+
+  // 5️⃣ Return JSX UI
+  return (
+    <div className="super-coins" style={{ textAlign: 'center', marginTop: '20px' }}>
+      <h2 className="super-coins-title">Super Coins</h2>
+      <p className="super-coins-info">
+        You will earn <strong>{superCoins}</strong> super coins with this purchase.
+      </p>
+    </div>
+  );
+};
+
+export default SuperCoin;
